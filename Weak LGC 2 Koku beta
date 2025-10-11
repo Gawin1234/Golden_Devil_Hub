@@ -1,0 +1,91 @@
+local Target = nil
+local ply = game.Players.LocalPlayer
+
+local CurrentCooldown = {}
+
+ply.CharacterAdded:Connect(function()
+	CurrentCooldown["OnSpawn"] = true
+	task.delay(1,function()
+		CurrentCooldown["OnSpawn"] = false
+	end)
+end)
+
+game:GetService("RunService").Stepped:Connect(function()
+	if not ply or CurrentCooldown["OnSpawn"] then
+		return
+	end
+	local char = game.Players.LocalPlayer.Character
+	
+	if char:FindFirstChildOfClass("Humanoid").Health <= 0 then
+		CurrentCooldown["OnSpawn"] = true
+	end
+	
+	if Target and Target.Parent and Target:FindFirstChild("HumanoidRootPart") and Target:FindFirstChildOfClass("Humanoid") then
+		if char:FindFirstChild("HumanoidRootPart") then
+			local BackPos = (Target.HumanoidRootPart.CFrame.LookVector * -1)
+			local ToCFrame = CFrame.new(Target.HumanoidRootPart.Position + Vector3.new(BackPos.X,0,BackPos.Z), Target.HumanoidRootPart.Position)
+			local DisabledAttack = false
+			if Target:FindFirstChild("Attacking") then
+				ToCFrame += Vector3.new(0,200,0)
+				DisabledAttack = true
+			end
+			local BodyHop = char.HumanoidRootPart:FindFirstChild("Golden_Devil_Hop_Monster_BodyHop")
+			if BodyHop and not BodyHop:IsA("BodyPosition") then
+				BodyHop:Destroy()
+			end
+			if not BodyHop then
+				BodyHop = Instance.new("BodyPosition")
+				BodyHop.Name = "Golden_Devil_Hop_Monster_BodyHop"
+				BodyHop.Parent = char.HumanoidRootPart
+			end
+			BodyHop.D = 1250
+			BodyHop.MaxForce = Vector3.new(math.huge,math.huge,math.huge)
+			BodyHop.P = 1e8
+			
+			BodyHop.Position = ToCFrame.Position
+			char.HumanoidRootPart.CFrame = ToCFrame
+			if not DisabledAttack then
+				game:GetService("ReplicatedStorage").Remotes.Attack:FireServer("M1", "Katana", false)
+			end
+			if Target:FindFirstChildOfClass("Humanoid").Health <= 0 then
+				Target = nil
+			end
+		end
+	else
+		if workspace:FindFirstChild("CharactersAndNPCs") then
+			for i,v in pairs(workspace:FindFirstChild("CharactersAndNPCs"):GetChildren()) do
+				if v.Name == "Kokushibo"
+					and v:FindFirstChildOfClass("Humanoid")
+					and v:FindFirstChildOfClass("Humanoid").Health > 0
+					and v:FindFirstChild("HumanoidRootPart")
+				then
+					Target = v
+				end
+			end
+		end
+		if char:FindFirstChild("HumanoidRootPart") and char.HumanoidRootPart:FindFirstChild("Golden_Devil_Hop_Monster_BodyHop") then
+			char.HumanoidRootPart:FindFirstChild("Golden_Devil_Hop_Monster_BodyHop"):Destroy()
+		end
+	end
+	if workspace:FindFirstChild("CharactersAndNPCs") then
+		for i,v in pairs(workspace.CharactersAndNPCs:GetChildren()) do
+			if v:FindFirstChildOfClass("Humanoid")
+				and v:FindFirstChild("Killers")
+				and v.Killers:FindFirstChild(ply.Name)
+				and v.Killers:FindFirstChild(ply.Name):IsA("ValueBase")
+				and tonumber(v.Killers:FindFirstChild(ply.Name).Value) >= v:FindFirstChildOfClass("Humanoid").MaxHealth * .15
+			then
+				v:FindFirstChildOfClass("Humanoid").Health = 0
+			end
+		end
+	end
+	if not CurrentCooldown["Anti_AFK"] then
+		CurrentCooldown["Anti_AFK"] = true
+		task.delay(10,function()
+			CurrentCooldown["Anti_AFK"] = false
+		end)
+		CurrentCooldown:CaptureController()
+		CurrentCooldown:ClickButton2(Vector2.new())
+	end
+	game:GetService("ReplicatedStorage").Events.Breathing:FireServer("BeginHamonBreathing")
+end)
