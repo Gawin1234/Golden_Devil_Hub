@@ -75,7 +75,7 @@ game:GetService("RunService").Stepped:Connect(function()
 				and v.Killers:FindFirstChild(ply.Name):IsA("ValueBase")
 				and tonumber(v.Killers:FindFirstChild(ply.Name).Value) >= v:FindFirstChildOfClass("Humanoid").MaxHealth * .15
 			then
-				v:FindFirstChildOfClass("Humanoid").Health = 0
+				v:FindFirstChildOfClass("Humanoid").Health = 5
 			end
 		end
 	end
