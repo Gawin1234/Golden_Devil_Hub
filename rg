@@ -475,7 +475,6 @@ RuntimeMoveProcessor.Changed:Connect(function()
 	local Hum = player.Character:FindFirstChildOfClass("Humanoid")
 	local Root = player.Character.HumanoidRootPart
 	if Enabled_Hop then
-		
 		IsHoped = true
 		local TargetMagnitude = (Root.Position - MoveToVal.Value.Position).Magnitude
 		if TargetMagnitude > 10 then
@@ -483,6 +482,7 @@ RuntimeMoveProcessor.Changed:Connect(function()
 		else
 			Root.CFrame = MoveToVal.Value
 		end
+		Root.Velocity = Vector3.new(0,0,0)
 		for _,aaba in pairs(player.Character:GetDescendants()) do
 			if aaba:IsA("BasePart") then
 				aaba.CanCollide = false
@@ -622,6 +622,7 @@ game:GetService("RunService").Stepped:Connect(function()
 				and CurrentTarget.Name ~= "Gyakusatsu"
 			then
 				labels("text", "Collecting Corpse: "..CurrentTarget.Name)
+				Enabled_Hop = false
 				pcall(function()
 					collect(CurrentTarget)
 				end)
