@@ -567,11 +567,11 @@ game:GetService("RunService").Stepped:Connect(function()
 			if not CurrentTarget or typeof(CurrentTarget) ~= "Instance" or not CurrentTarget.Parent then
 				CurrentTarget = getNPC()
 			end
+			AttackingCooldown = true
 			if typeof(CurrentTarget) == "Instance"
 				and CurrentTarget:FindFirstChildOfClass("Humanoid")
 				and CurrentTarget:FindFirstChild("HumanoidRootPart")
 			then
-				AttackingCooldown = true
 				if not findobj(player.Character, "Kagune") and not findobj(player.Character, "Quinque")  then
 					pressKey(array.stage)
 				end
@@ -600,23 +600,27 @@ game:GetService("RunService").Stepped:Connect(function()
 					if player.PlayerFolder.CanAct.Value then
 						pressKey("Mouse1")
 					end
-					if not CurrentTarget:FindFirstChild("HumanoidRootPart") then
-						labels("Kills", 1)
-					end
-					if CurrentTarget:FindFirstChild(CurrentTarget.Name.." Corpse")
-						and CurrentTarget.Name ~= "Eto Yoshimura"
-						and not findobj(CurrentTarget.Parent, "Gyakusatsu")
-						and CurrentTarget.Name ~= "Gyakusatsu"
-					then
-						labels("text", "Collecting Corpse: "..CurrentTarget.Name)
-						pcall(function()
-							collect(CurrentTarget)
-						end)
-						wait(3)
-					end
+					local DirectTarget = CurrentTarget
+					task.delay(.1,function()
+						if typeof(DirectTarget) ~= "Instance" or not DirectTarget.Parent or not CurrentTarget:FindFirstChild("HumanoidRootPart") then
+							labels("Kills", 1)
+						end
+					end)
 				end
-				AttackingCooldown = false
 			end
+			if typeof(CurrentTarget) == "Instance"
+				and CurrentTarget:FindFirstChild(CurrentTarget.Name.." Corpse")
+				and CurrentTarget.Name ~= "Eto Yoshimura"
+				and not findobj(CurrentTarget.Parent, "Gyakusatsu")
+				and CurrentTarget.Name ~= "Gyakusatsu"
+			then
+				labels("text", "Collecting Corpse: "..CurrentTarget.Name)
+				pcall(function()
+					collect(CurrentTarget)
+				end)
+				wait(3)
+			end
+			AttackingCooldown = false
 		end
 	else
 		labels("text", "")
