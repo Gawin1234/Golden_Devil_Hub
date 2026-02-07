@@ -606,8 +606,10 @@ game:GetService("RunService").Stepped:Connect(function()
 						and not findobj(CurrentTarget.Parent, "Gyakusatsu")
 						and CurrentTarget.Name ~= "Gyakusatsu"
 					then
+						print("Collecting corpse")
 						labels("text", "Collecting Corpse: "..CurrentTarget.Name)
 						collect(CurrentTarget)
+						print("nice corpse")
 						wait(3)
 					end
 				end
