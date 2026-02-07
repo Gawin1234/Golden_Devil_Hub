@@ -489,6 +489,7 @@ RuntimeMoveProcessor.Changed:Connect(function()
 end)
 
 local ReruntimeCooldown = false
+local RemotesFolder:Instance = game:GetService("ReplicatedStorage"):FindFirstChild("Remotes")
 
 game:GetService("RunService").Stepped:Connect(function()
 	if not ReruntimeCooldown then
@@ -498,6 +499,10 @@ game:GetService("RunService").Stepped:Connect(function()
 		end)
 		RuntimeMoveProcessor.Value = 0
 		game:GetService("TweenService"):Create(RuntimeMoveProcessor,TweenInfo.new(3,Enum.EasingStyle.Linear),{Value = 10}):Play()
+	end
+	if not RemotesFolder then
+		labels("text", "Waiting for remotes folder")
+		return
 	end
 	if array.autofarm then
 		if not player.Character
@@ -510,6 +515,7 @@ game:GetService("RunService").Stepped:Connect(function()
 		if player.Character:FindFirstChildOfClass("Humanoid").Health <= 0 then
 			WaitingForCharacter = true
 			labels("text", "Waiting for character respawn")
+			RemotesFolder = game:GetService("ReplicatedStorage"):FindFirstChild("Remotes")
 			return
 		end
 
@@ -527,10 +533,11 @@ game:GetService("RunService").Stepped:Connect(function()
 			MoveToVal.Value = npc.HumanoidRootPart.CFrame
 			Enabled_Hop = true
 			if (npc.HumanoidRootPart.Position - player.Character.HumanoidRootPart.Position).Magnitude <= 10 then
-				fireclickdetector(npc.TaskIndicator.ClickDetector)
 				if Request_QuestStage == "Request" then
 					labels("text", "Getting quest...")
-					invoke(remotes[npc.Name].Task)
+					if RemotesFolder:FindFirstChild(npc.Name) and RemotesFolder:FindFirstChild(npc.Name):FindFirstChild("Task") then
+						RemotesFolder:FindFirstChild(npc.Name):FindFirstChild("Task"):InvokeServer()
+					end
 				elseif Request_QuestStage == "Reward" then
 					labels("text", "Withdrawing reputation")
 					invoke(remotes.ReputationCashOut)
