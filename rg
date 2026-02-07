@@ -447,7 +447,7 @@ do
 	until key
 end
 
-local CollectingCorpse = false
+local AttackingCooldown = false
 local WaitingForCharacter = false
 local GetquestCooldown = false
 local IsTweened = false
@@ -490,6 +490,8 @@ end)
 
 local ReruntimeCooldown = false
 local RemotesFolder:Instance = game:GetService("ReplicatedStorage"):FindFirstChild("Remotes")
+
+local CurrentTarget = nil
 
 game:GetService("RunService").Stepped:Connect(function()
 	if not ReruntimeCooldown then
@@ -538,10 +540,7 @@ game:GetService("RunService").Stepped:Connect(function()
 			RemotesFolder = game:GetService("ReplicatedStorage"):FindFirstChild("Remotes")
 			return
 		end
-
-		if not findobj(player.Character, "Kagune") and not findobj(player.Character, "Quinque")  then
-			pressKey(array.stage)
-		end
+		
 		local Request_QuestStage = ""
 		if myData.ReputationFarm and (not findobj(player.PlayerFolder.CurrentQuest.Complete, "Aogiri Member") or player.PlayerFolder.CurrentQuest.Complete["Aogiri Member"].Value == player.PlayerFolder.CurrentQuest.Complete["Aogiri Member"].Max.Value) then
 			Request_QuestStage = "Request"
@@ -564,8 +563,56 @@ game:GetService("RunService").Stepped:Connect(function()
 					oldtick = tick()
 				end
 			end
-		else
-			
+		elseif not AttackingCooldown then
+			if not CurrentTarget or typeof(CurrentTarget) ~= "Instance" or not CurrentTarget.Parent then
+				CurrentTarget = getNPC()
+			end
+			if typeof(CurrentTarget) == "Instance"
+				and CurrentTarget:FindFirstChildOfClass("Humanoid")
+				and CurrentTarget:FindFirstChild("HumanoidRootPart")
+			then
+				AttackingCooldown = true
+				if not findobj(player.Character, "Kagune") and not findobj(player.Character, "Quinque")  then
+					pressKey(array.stage)
+				end
+				local TargetMagnitude = (player.Character.HumanoidRootPart.Position - CurrentTarget.HumanoidRootPart.Position).Magnitude
+				if TargetMagnitude > 15 then
+					labels("text", "Moving to: "..CurrentTarget.Name)
+					MoveToVal.Value = CurrentTarget.HumanoidRootPart.CFrame
+					Enabled_Hop = true
+				else
+					labels("text", "Attacking: "..CurrentTarget.Name)
+					local TargetCFrame:CFrame = nil
+					if myData.Boss[CurrentTarget.Name] or CurrentTarget.Parent.Name == "GyakusatsuSpawn" then 
+						for x,y in pairs(myData.Skills) do
+							if player.PlayerFolder.CanAct.Value and y and array.skills[x].Value ~= "DownTime" then
+								pressKey(x)
+							end
+						end
+						TargetCFrame = CFrame.new(CurrentTarget.HumanoidRootPart.Position + Vector3.new(0,-myData.DistanceFromBoss,0), CurrentTarget.HumanoidRootPart.Position)
+					else
+						TargetCFrame = CurrentTarget.HumanoidRootPart.CFrame + CurrentTarget.HumanoidRootPart.CFrame.lookVector * myData.DistanceFromNpc 
+					end
+					if typeof(TargetCFrame) == "CFrame" then
+						MoveToVal.Value = TargetCFrame
+						Enabled_Hop = true
+					end
+					if player.PlayerFolder.CanAct.Value then
+						pressKey("Mouse1")
+					end
+					labels("Kills", 1)
+					if CurrentTarget:FindFirstChild(CurrentTarget.Name.." Corpse")
+						and CurrentTarget.Name ~= "Eto Yoshimura"
+						and not findobj(CurrentTarget.Parent, "Gyakusatsu")
+						and CurrentTarget.Name ~= "Gyakusatsu"
+					then
+						labels("text", "Collecting Corpse: "..CurrentTarget.Name)
+						collect(CurrentTarget)
+						wait(3)
+					end
+				end
+				AttackingCooldown = false
+			end
 		end
 	else
 		labels("text", "")
