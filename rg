@@ -482,7 +482,7 @@ RuntimeMoveProcessor.Changed:Connect(function()
 		else
 			Root.CFrame = MoveToVal.Value
 		end
-		Root.Velocity = Vector3.new(0,0,0)
+		Root.Velocity = Vector3.new(0,.5,0)
 		for _,aaba in pairs(player.Character:GetDescendants()) do
 			if aaba:IsA("BasePart") then
 				aaba.CanCollide = false
