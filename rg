@@ -527,6 +527,7 @@ game:GetService("RunService").Stepped:Connect(function()
 			MoveToVal.Value = npc.HumanoidRootPart.CFrame
 			Enabled_Hop = true
 			if (npc.HumanoidRootPart.Position - player.Character.HumanoidRootPart.Position).Magnitude <= 10 then
+				fireclickdetector(npc.TaskIndicator.ClickDetector)
 				if Request_QuestStage == "Request" then
 					labels("text", "Getting quest...")
 					invoke(remotes[npc.Name].Task)
@@ -541,5 +542,6 @@ game:GetService("RunService").Stepped:Connect(function()
 		end
 	else
 		labels("text", "")
+		Enabled_Hop = false
 	end
 end)
