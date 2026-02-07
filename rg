@@ -600,16 +600,18 @@ game:GetService("RunService").Stepped:Connect(function()
 					if player.PlayerFolder.CanAct.Value then
 						pressKey("Mouse1")
 					end
-					labels("Kills", 1)
+					if not CurrentTarget:FindFirstChild("HumanoidRootPart") then
+						labels("Kills", 1)
+					end
 					if CurrentTarget:FindFirstChild(CurrentTarget.Name.." Corpse")
 						and CurrentTarget.Name ~= "Eto Yoshimura"
 						and not findobj(CurrentTarget.Parent, "Gyakusatsu")
 						and CurrentTarget.Name ~= "Gyakusatsu"
 					then
-						print("Collecting corpse")
 						labels("text", "Collecting Corpse: "..CurrentTarget.Name)
-						collect(CurrentTarget)
-						print("nice corpse")
+						pcall(function()
+							collect(CurrentTarget)
+						end)
 						wait(3)
 					end
 				end
