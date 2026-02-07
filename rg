@@ -602,7 +602,8 @@ game:GetService("RunService").Stepped:Connect(function()
 					end
 					local DirectTarget = CurrentTarget
 					task.delay(.1,function()
-						if typeof(DirectTarget) ~= "Instance" or not DirectTarget.Parent or not CurrentTarget:FindFirstChild("HumanoidRootPart") then
+						if not CurrentTarget:FindFirstChild("HumanoidRootPart") and not CurrentTarget:GetAttribute("Golden_Devil_Checker_Claimed_Kill") then
+							CurrentTarget:SetAttribute("Golden_Devil_Checker_Claimed_Kill",true)
 							labels("Kills", 1)
 						end
 					end)
