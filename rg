@@ -475,17 +475,18 @@ RuntimeMoveProcessor.Changed:Connect(function()
 	local Hum = player.Character:FindFirstChildOfClass("Humanoid")
 	local Root = player.Character.HumanoidRootPart
 	if Enabled_Hop then
-		for _,aaba in pairs(player.Character:GetDescendants()) do
-			if aaba:IsA("BasePart") then
-				aaba.CanCollide = false
-			end
-		end
+		
 		IsHoped = true
 		local TargetMagnitude = (Root.Position - MoveToVal.Value.Position).Magnitude
 		if TargetMagnitude > 10 then
 			game:GetService("TweenService"):Create(Root,TweenInfo.new(TargetMagnitude / myData.TeleportSpeed,Enum.EasingStyle.Linear),{CFrame = CFrame.new(MoveToVal.Value.Position)}):Play()
 		else
 			Root.CFrame = MoveToVal.Value
+		end
+		for _,aaba in pairs(player.Character:GetDescendants()) do
+			if aaba:IsA("BasePart") then
+				aaba.CanCollide = false
+			end
 		end
 	elseif IsHoped then
 		IsHoped = false
