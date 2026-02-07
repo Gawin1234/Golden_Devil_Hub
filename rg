@@ -504,6 +504,26 @@ game:GetService("RunService").Stepped:Connect(function()
 		labels("text", "Waiting for remotes folder")
 		return
 	end
+	local QuestViewerText = nil
+	if player:FindFirstChild("PlayerFolder")
+		and player.PlayerFolder:FindFirstChild("CurrentQuest")
+		and player.PlayerFolder.CurrentQuest:FindFirstChild("Complete")
+	then
+		local CurrentQuestInstance:Instance = pcall(function()
+			return player.PlayerFolder.CurrentQuest.Complete:GetChildren()[1]
+		end)
+		if typeof(CurrentQuestInstance) == "Instance" and CurrentQuestInstance:IsA("ValueBase") then
+			QuestViewerText = CurrentQuestInstance.Name..": "..tostring(CurrentQuestInstance.Value)
+			if CurrentQuestInstance:FindFirstChild("Max") and CurrentQuestInstance:FindFirstChild("Max"):IsA("ValueBase") then
+				QuestViewerText = QuestViewerText.." / "..tostring(CurrentQuestInstance:FindFirstChild("Max").Value)
+			end
+		end
+	end
+	if typeof(QuestViewerText) == "string" then
+		labels("Quest", "Quest - "..QuestViewerText)
+	else
+		labels("Quest", "Quest - None")
+	end
 	if array.autofarm then
 		if not player.Character
 			or not player.Character:FindFirstChildOfClass("Humanoid")
