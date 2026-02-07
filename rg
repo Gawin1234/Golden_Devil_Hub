@@ -57,7 +57,7 @@ local array = {
 		["Fighter"] = 50,
 	},
 
-	npcs = {["Aogiri Members"] = "GhoulSpawns", Investigators = "CCGSpawns", Humans = "HumanSpawns"},
+	npcs = {["Aogiri Members"] = "GhoulSpawns", Investigators = "CCGSpawns", Humans = "HumanSpawns", None = "None"},
 
 	stages = {"One", "Two", "Three", "Four", "Five", "Six"},
 
