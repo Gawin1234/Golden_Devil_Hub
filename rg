@@ -97,7 +97,7 @@ labels = setmetatable({
 	text = {label = tab1:AddLabel("")},
 	tfarm = {label = tab1:AddLabel("")},
 	space = {label = tab1:AddLabel("")},
-	Quest = {prefix = "Current Quest: ", label = tab1:AddLabel("Current Quest: None")},
+	Quest = {prefix = "Quest - ", label = tab1:AddLabel("Unknow")},
 	Yen = {prefix = "Yen: ", label = tab1:AddLabel("Yen: 0"), value = 0, oldval = player.PlayerFolder.Stats.Yen.Value},
 	RC = {prefix = "RC: ", label = tab1:AddLabel("RC: 0"), value = 0, oldval = player.PlayerFolder.Stats.RC.Value},
 	Kills = {prefix = "Kills: ", label = tab1:AddLabel("Kills: 0"), value = 0} 
@@ -509,7 +509,7 @@ game:GetService("RunService").Stepped:Connect(function()
 		and player.PlayerFolder:FindFirstChild("CurrentQuest")
 		and player.PlayerFolder.CurrentQuest:FindFirstChild("Complete")
 	then
-		local CurrentQuestInstance:Instance = pcall(function()
+		local asdfg,CurrentQuestInstance:Instance = pcall(function()
 			return player.PlayerFolder.CurrentQuest.Complete:GetChildren()[1]
 		end)
 		if typeof(CurrentQuestInstance) == "Instance" and CurrentQuestInstance:IsA("ValueBase") then
@@ -520,9 +520,9 @@ game:GetService("RunService").Stepped:Connect(function()
 		end
 	end
 	if typeof(QuestViewerText) == "string" then
-		labels("Quest", "Quest - "..QuestViewerText)
+		labels("Quest", QuestViewerText)
 	else
-		labels("Quest", "Quest - None")
+		labels("Quest", "None")
 	end
 	if array.autofarm then
 		if not player.Character
