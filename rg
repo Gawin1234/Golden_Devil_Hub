@@ -453,7 +453,7 @@ local GetquestCooldown = false
 local IsTweened = false
 
 game.Players.LocalPlayer.CharacterAdded:Connect(function()
-	wait(5)
+	wait(3)
 	WaitingForCharacter = false
 end)
 -- auto farm
@@ -598,7 +598,7 @@ game:GetService("RunService").Stepped:Connect(function()
 						end
 						TargetCFrame = CFrame.new(CurrentTarget.HumanoidRootPart.Position + Vector3.new(0,-myData.DistanceFromBoss,0), CurrentTarget.HumanoidRootPart.Position)
 					else
-						TargetCFrame = CFrame.new(CurrentTarget.HumanoidRootPart.Position + Vector3.new(0,myData.DistanceFromNpc,0) + (Vector3.new(CurrentTarget.HumanoidRootPart.Velocity.X,0,CurrentTarget.HumanoidRootPart.Velocity.Z) * .5), CurrentTarget.HumanoidRootPart.Position)
+						TargetCFrame = CFrame.new(CurrentTarget.HumanoidRootPart.Position + Vector3.new(0,myData.DistanceFromNpc,0) + (Vector3.new(CurrentTarget.HumanoidRootPart.Velocity.X,0,CurrentTarget.HumanoidRootPart.Velocity.Z) * .3), CurrentTarget.HumanoidRootPart.Position)
 					end
 					if typeof(TargetCFrame) == "CFrame" then
 						MoveToVal.Value = TargetCFrame
