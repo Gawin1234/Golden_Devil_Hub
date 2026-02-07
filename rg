@@ -453,7 +453,7 @@ local GetquestCooldown = false
 local IsTweened = false
 
 game.Players.LocalPlayer.CharacterAdded:Connect(function()
-	wait(8)
+	wait(5)
 	WaitingForCharacter = false
 end)
 -- auto farm
@@ -627,6 +627,9 @@ game:GetService("RunService").Stepped:Connect(function()
 					collect(CurrentTarget)
 				end)
 				wait(3)
+				if typeof(CurrentTarget) == "Instance" then
+					CurrentTarget = nil
+				end
 			end
 			AttackingCooldown = false
 		end
