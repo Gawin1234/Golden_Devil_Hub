@@ -33,7 +33,9 @@ local myData = loadstring(game:HttpGet("https://raw.githubusercontent.com/z4gs/s
 		["Eto Yoshimura"] = false,
 		["Young Eto Yoshimura"] = false,
 		["Koutarou Amon"] = false,
-		["Nishiki Nishio"] = false
+		["Nishiki Nishio"] = false,
+		["Touka Kirishima"] = false,
+		["Fighter"] = false,
 	},
 	DistanceFromNpc = 5,
 	DistanceFromBoss = 8,
@@ -50,7 +52,9 @@ local array = {
 		["Eto Yoshimura"] = 1250,
 		["Young Eto Yoshimura"] = 750,
 		["Koutarou Amon"] = 750,
-		["Nishiki Nishio"] = 250
+		["Nishiki Nishio"] = 250,
+		["Touka Kirishima"] = 250,
+		["Fighter"] = 250,
 	},
 
 	npcs = {["Aogiri Members"] = "GhoulSpawns", Investigators = "CCGSpawns", Humans = "HumanSpawns"},
@@ -358,24 +362,6 @@ local function getQuest(typ)
 	end
 end
 
-local function collect(npc)
-	local timer = tick()
-	local model = waitforobj(npc, npc.Name.." Corpse", 2)
-	local clickpart = waitforobj(model, "ClickPart", 2)
-
-	player.Character.HumanoidRootPart.CFrame = clickpart.CFrame * CFrame.new(0,1.7,0)
-
-	waitforobj(clickpart, "")
-	repeat
-		if tick() - timer > 4 then
-			break
-		end
-		player.Character.Humanoid:MoveTo(clickpart.Position)
-		wait()
-		fireclickdetector(clickpart[""], 1)
-	until not model.Parent.Parent or not findobj(model, "ClickPart") or not array.autofarm or player.Character.Humanoid.Health <= 0
-end
-
 local function pressKey(topress)
 	fire(player.Character.Remotes.KeyEvent, key, topress, "Down", player:GetMouse().Hit, nil, workspace.Camera.CFrame)
 end
@@ -461,6 +447,26 @@ end)
 local Enabled_Hop = false
 local IsHoped = false
 local MoveToVal = Instance.new("CFrameValue")
+
+local function collect(npc)
+	local timer = tick()
+	local model = waitforobj(npc, npc.Name.." Corpse", 2)
+	local clickpart = waitforobj(model, "ClickPart", 2)
+
+	MoveToVal.Value = clickpart.CFrame * CFrame.new(0,1.7,0)
+	Enabled_Hop = true
+	
+	waitforobj(clickpart, "")
+	repeat
+		if tick() - timer > 4 then
+			break
+		end
+		MoveToVal.Value = clickpart.CFrame * CFrame.new(0,1.7,0)
+		Enabled_Hop = true
+		wait()
+		fireclickdetector(clickpart[""], 1)
+	until not model.Parent.Parent or not findobj(model, "ClickPart") or not array.autofarm or player.Character.Humanoid.Health <= 0
+end
 
 local RuntimeMoveProcessor = Instance.new("NumberValue")
 RuntimeMoveProcessor.Changed:Connect(function()
