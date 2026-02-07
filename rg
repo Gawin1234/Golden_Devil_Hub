@@ -597,7 +597,7 @@ game:GetService("RunService").Stepped:Connect(function()
 						end
 						TargetCFrame = CFrame.new(CurrentTarget.HumanoidRootPart.Position + Vector3.new(0,-myData.DistanceFromBoss,0), CurrentTarget.HumanoidRootPart.Position)
 					else
-						TargetCFrame = CurrentTarget.HumanoidRootPart.CFrame + (CurrentTarget.HumanoidRootPart.CFrame.lookVector * -myData.DistanceFromNpc) 
+						TargetCFrame = CFrame.new(CurrentTarget.HumanoidRootPart.Position + Vector3.new(0,myData.DistanceFromNpc,0), CurrentTarget.HumanoidRootPart.Position)
 					end
 					if typeof(TargetCFrame) == "CFrame" then
 						MoveToVal.Value = TargetCFrame
