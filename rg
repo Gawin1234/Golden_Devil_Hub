@@ -159,7 +159,7 @@ end
 
 tab2:AddSlider("TP Speed", function(x)
 	myData.TeleportSpeed = x
-end, {min = 90, max = 500}):Set(45)
+end, {min = 90, max = 400}):Set(45)
 
 tab2:AddSlider("Distance from NPC", function(x)
 	myData.DistanceFromNpc = x * -1
