@@ -554,8 +554,8 @@ game:GetService("RunService").Stepped:Connect(function()
 			Request_QuestStage = "Reward"
 		end
 		if table.find({"Request","Reward"},Request_QuestStage) then
-			labels("text", "Moving to: Quest")
 			local npc = team == "Ghoul" and workspace.Anteiku.Yoshimura or workspace.CCGBuilding.Yoshitoki
+			labels("text", "Moving to: "..npc.Name.."[Quest]")
 			MoveToVal.Value = npc.HumanoidRootPart.CFrame
 			Enabled_Hop = true
 			if (npc.HumanoidRootPart.Position - player.Character.HumanoidRootPart.Position).Magnitude <= 10 then
