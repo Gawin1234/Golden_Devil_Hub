@@ -583,10 +583,11 @@ game:GetService("RunService").Stepped:Connect(function()
 				CurrentTarget = Selected_New_Target
 				task.delay(30,function()
 					if CurrentTarget == Selected_New_Target then
+						labels("text", [[Time out: can't kill "]]..Selected_New_Target.Name..[[" in 30s]])
 						CurrentTarget = nil
 						MoveToVal.Value = CFrame.new(0,50,0)
 						Enabled_Hop = true
-						wait(2)
+						wait(3)
 					end
 				end)
 			end
