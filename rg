@@ -433,6 +433,7 @@ do
 	until key
 end
 
+local ActionCooldown = false
 local AttackingCooldown = false
 local WaitingForCharacter = false
 local GetquestCooldown = false
@@ -552,7 +553,9 @@ game:GetService("RunService").Stepped:Connect(function()
 			RemotesFolder = game:GetService("ReplicatedStorage"):FindFirstChild("Remotes")
 			return
 		end
-		
+		if ActionCooldown then
+			return
+		end
 		local Request_QuestStage = ""
 		if myData.ReputationFarm and (not findobj(player.PlayerFolder.CurrentQuest.Complete, "Aogiri Member") or player.PlayerFolder.CurrentQuest.Complete["Aogiri Member"].Value == player.PlayerFolder.CurrentQuest.Complete["Aogiri Member"].Max.Value) then
 			Request_QuestStage = "Request"
@@ -583,11 +586,13 @@ game:GetService("RunService").Stepped:Connect(function()
 				CurrentTarget = Selected_New_Target
 				task.delay(30,function()
 					if CurrentTarget == Selected_New_Target then
+						ActionCooldown = true
 						labels("text", [[Time out: can't kill "]]..Selected_New_Target.Name..[[" in 30s]])
 						CurrentTarget = nil
 						MoveToVal.Value = CFrame.new(0,50,0)
 						Enabled_Hop = true
-						wait(3)
+						wait(4)
+						ActionCooldown = false
 					end
 				end)
 			end
