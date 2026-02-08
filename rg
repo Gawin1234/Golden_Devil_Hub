@@ -577,10 +577,19 @@ game:GetService("RunService").Stepped:Connect(function()
 				end
 			end
 		elseif not AttackingCooldown then
-			if not CurrentTarget or typeof(CurrentTarget) ~= "Instance" or not CurrentTarget.Parent then
-				CurrentTarget = getNPC()
-			end
 			AttackingCooldown = true
+			if not CurrentTarget or typeof(CurrentTarget) ~= "Instance" or not CurrentTarget.Parent then
+				local Selected_New_Target = getNPC()
+				CurrentTarget = Selected_New_Target
+				task.delay(30,function()
+					if CurrentTarget == Selected_New_Target then
+						CurrentTarget = nil
+						MoveToVal.Value = CFrame.new(0,50,0)
+						Enabled_Hop = true
+						wait(2)
+					end
+				end)
+			end
 			if typeof(CurrentTarget) == "Instance"
 				and CurrentTarget:FindFirstChildOfClass("Humanoid")
 				and CurrentTarget:FindFirstChild("HumanoidRootPart")
