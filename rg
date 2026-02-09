@@ -584,10 +584,10 @@ game:GetService("RunService").Stepped:Connect(function()
 			if not CurrentTarget or typeof(CurrentTarget) ~= "Instance" or not CurrentTarget.Parent then
 				local Selected_New_Target = getNPC()
 				CurrentTarget = Selected_New_Target
-				task.delay(30,function()
+				task.delay(60,function()
 					if CurrentTarget == Selected_New_Target then
 						ActionCooldown = true
-						labels("text", [[Time out: can't kill "]]..Selected_New_Target.Name..[[" in 30s]])
+						labels("text", [[Time out: can't kill "]]..Selected_New_Target.Name..[[" in 60s]])
 						CurrentTarget = nil
 						MoveToVal.Value = CFrame.new(0,50,0)
 						Enabled_Hop = true
@@ -619,7 +619,7 @@ game:GetService("RunService").Stepped:Connect(function()
 						end
 						TargetCFrame = CFrame.new(CurrentTarget.HumanoidRootPart.Position + Vector3.new(0,-myData.DistanceFromBoss,0), CurrentTarget.HumanoidRootPart.Position)
 					else
-						TargetCFrame = CFrame.new(CurrentTarget.HumanoidRootPart.Position + Vector3.new(0,myData.DistanceFromNpc,0) + (Vector3.new(CurrentTarget.HumanoidRootPart.Velocity.X,0,CurrentTarget.HumanoidRootPart.Velocity.Z) * .3), CurrentTarget.HumanoidRootPart.Position)
+						TargetCFrame = CFrame.new(CurrentTarget.HumanoidRootPart.Position + Vector3.new(0,myData.DistanceFromNpc,0) + (Vector3.new(CurrentTarget.HumanoidRootPart.Velocity.X,0,CurrentTarget.HumanoidRootPart.Velocity.Z) * .5), CurrentTarget.HumanoidRootPart.Position)
 					end
 					if typeof(TargetCFrame) == "CFrame" then
 						MoveToVal.Value = TargetCFrame
