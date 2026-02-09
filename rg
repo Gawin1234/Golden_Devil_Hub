@@ -587,14 +587,14 @@ game:GetService("RunService").Stepped:Connect(function()
 				task.delay(60,function()
 					if CurrentTarget == Selected_New_Target then
 						ActionCooldown = true
-						task.delay(2,function()
+						task.delay(1,function()
 							ActionCooldown = false
 						end)
 						labels("text", [[Time out: can't kill "]]..Selected_New_Target.Name..[[" in 60s]])
 						CurrentTarget = nil
 						local PlayerPosition = player.Character.HumanoidRootPart.Position
 						local FaceToCFrame = CFrame.new(PlayerPosition.X,70,PlayerPosition.Z) * CFrame.Angles(0,math.rad(math.random(-180,180)),0)
-						MoveToVal.Value = FaceToCFrame + (FaceToCFrame.LookVector * 500)
+						MoveToVal.Value = FaceToCFrame + (FaceToCFrame.LookVector * 100)
 						Enabled_Hop = true
 					end
 				end)
