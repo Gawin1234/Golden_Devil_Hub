@@ -613,7 +613,7 @@ game:GetService("RunService").Stepped:Connect(function()
 					labels("text", "Attacking: "..CurrentTarget.Name)
 					local TargetCFrame:CFrame = nil
 					local TargetVelocity = Vector3.new(0,0,0)
-					if typeof(LastTargetPos) == "Vector3" and (TargetVelocity - CurrentTarget.HumanoidRootPart.Position).Magnitude < 30 then
+					if typeof(LastTargetPos) == "Vector3" and (TargetVelocity - CurrentTarget.HumanoidRootPart.Position).Magnitude < 20 then
 						TargetVelocity = CFrame.new(TargetVelocity, CurrentTarget.HumanoidRootPart.Position).LookVector * (TargetVelocity - CurrentTarget.HumanoidRootPart.Position).Magnitude
 					end
 					if myData.Boss[CurrentTarget.Name] or CurrentTarget.Parent.Name == "GyakusatsuSpawn" then 
@@ -622,9 +622,9 @@ game:GetService("RunService").Stepped:Connect(function()
 								pressKey(x)
 							end
 						end
-						TargetCFrame = CFrame.new(CurrentTarget.HumanoidRootPart.Position + Vector3.new(0,-myData.DistanceFromBoss,0) + (Vector3.new(CurrentTarget.HumanoidRootPart.Velocity.X,0,CurrentTarget.HumanoidRootPart.Velocity.Z) * .4), CurrentTarget.HumanoidRootPart.Position)
+						TargetCFrame = CFrame.new(CurrentTarget.HumanoidRootPart.Position + Vector3.new(0,-myData.DistanceFromBoss,0) + (Vector3.new(TargetVelocity.X,0,TargetVelocity.Z) * 2), CurrentTarget.HumanoidRootPart.Position)
 					else
-						TargetCFrame = CFrame.new(CurrentTarget.HumanoidRootPart.Position + Vector3.new(0,myData.DistanceFromNpc,0) + (Vector3.new(CurrentTarget.HumanoidRootPart.Velocity.X,0,CurrentTarget.HumanoidRootPart.Velocity.Z) * .4), CurrentTarget.HumanoidRootPart.Position)
+						TargetCFrame = CFrame.new(CurrentTarget.HumanoidRootPart.Position + Vector3.new(0,myData.DistanceFromNpc,0) + (Vector3.new(TargetVelocity.X,0,TargetVelocity.Z) * 2), CurrentTarget.HumanoidRootPart.Position)
 					end
 					if typeof(TargetCFrame) == "CFrame" then
 						MoveToVal.Value = TargetCFrame
