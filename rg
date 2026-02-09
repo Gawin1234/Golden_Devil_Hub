@@ -505,7 +505,6 @@ local ReruntimeCooldown = false
 local RemotesFolder:Instance = game:GetService("ReplicatedStorage"):FindFirstChild("Remotes")
 
 local CurrentTarget = nil
-local LastTargetPos
 
 game:GetService("RunService").Stepped:Connect(function()
 	if not ReruntimeCooldown then
@@ -605,33 +604,26 @@ game:GetService("RunService").Stepped:Connect(function()
 					pressKey(array.stage)
 				end
 				local TargetMagnitude = (player.Character.HumanoidRootPart.Position - CurrentTarget.HumanoidRootPart.Position).Magnitude
-				if TargetMagnitude > 15 then
+				if TargetMagnitude > 30 then
 					labels("text", "Moving to: "..CurrentTarget.Name)
 					MoveToVal.Value = CurrentTarget.HumanoidRootPart.CFrame
 					Enabled_Hop = true
 				else
 					labels("text", "Attacking: "..CurrentTarget.Name)
 					local TargetCFrame:CFrame = nil
-					local TargetVelocity = Vector3.new(0,0,0)
-					if typeof(LastTargetPos) == "Vector3" and (TargetVelocity - CurrentTarget.HumanoidRootPart.Position).Magnitude < 30 then
-						TargetVelocity = CFrame.new(TargetVelocity, CurrentTarget.HumanoidRootPart.Position).LookVector * (TargetVelocity - CurrentTarget.HumanoidRootPart.Position).Magnitude
-					end
 					if myData.Boss[CurrentTarget.Name] or CurrentTarget.Parent.Name == "GyakusatsuSpawn" then 
 						for x,y in pairs(myData.Skills) do
 							if player.PlayerFolder.CanAct.Value and y and array.skills[x].Value ~= "DownTime" then
 								pressKey(x)
 							end
 						end
-						TargetCFrame = CFrame.new(CurrentTarget.HumanoidRootPart.Position + Vector3.new(0,-myData.DistanceFromBoss,0) + (Vector3.new(TargetVelocity.X,0,TargetVelocity.Z) * 5), CurrentTarget.HumanoidRootPart.Position)
+						TargetCFrame = CFrame.new(CurrentTarget.HumanoidRootPart.Position + Vector3.new(0,-myData.DistanceFromBoss,0) + (Vector3.new(CurrentTarget.HumanoidRootPart.Velocity.X,0,CurrentTarget.HumanoidRootPart.Velocity.Z) * .2), CurrentTarget.HumanoidRootPart.Position)
 					else
-						TargetCFrame = CFrame.new(CurrentTarget.HumanoidRootPart.Position + Vector3.new(0,myData.DistanceFromNpc,0) + (Vector3.new(TargetVelocity.X,0,TargetVelocity.Z) * 5), CurrentTarget.HumanoidRootPart.Position)
+						TargetCFrame = CFrame.new(CurrentTarget.HumanoidRootPart.Position + Vector3.new(0,myData.DistanceFromNpc,0) + (Vector3.new(CurrentTarget.HumanoidRootPart.Velocity.X,0,CurrentTarget.HumanoidRootPart.Velocity.Z) * .3), CurrentTarget.HumanoidRootPart.Position)
 					end
 					if typeof(TargetCFrame) == "CFrame" then
 						MoveToVal.Value = TargetCFrame
 						Enabled_Hop = true
-						task.delay(.1,function()
-							LastTargetPos = TargetCFrame.Position
-						end)
 					end
 					if player.PlayerFolder.CanAct.Value then
 						pressKey("Mouse1")
